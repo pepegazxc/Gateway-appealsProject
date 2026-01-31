@@ -24,4 +24,11 @@ spring:
               filters:
                 - StripPrefix=1
 
+            - id: register-service
+              uri: http://localhost:8081
+              predicates:
+                - Path=/auth/**
+              filters:
+                - StripPrefix=1
+
 
