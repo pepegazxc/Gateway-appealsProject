@@ -1,6 +1,9 @@
 server:
   port: 8090
 
+token:
+  key: ${JWT_KEY}
+
 spring:
   docker:
     compose:
