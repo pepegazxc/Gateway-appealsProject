@@ -2,7 +2,6 @@ package gateway.security;
 
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
-import jakarta.websocket.Decoder;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -28,7 +27,8 @@ public class Config {
         http
                 .csrf(c -> c.disable())
                 .authorizeHttpRequests(request -> request
-                        .requestMatchers("/auth", "/help").permitAll()
+                        .requestMatchers("/auth/**", "/help/**").permitAll()
+                        .requestMatchers("/appeal/**").hasAnyRole()
                         .anyRequest().authenticated())
                 .oauth2ResourceServer(oauth -> oauth
                         .jwt(Customizer.withDefaults()));
