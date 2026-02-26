@@ -23,12 +23,12 @@ public class Config {
     private String jwtSecret;
 
     @Bean
-    public SecurityFilterChain springSecurityFilterChain(HttpSecurity http) {
+    public SecurityFilterChain filterChain(HttpSecurity http) {
         http
                 .csrf(c -> c.disable())
                 .authorizeHttpRequests(request -> request
                         .requestMatchers("/auth/**", "/help/**").permitAll()
-                        .requestMatchers("/appeal/**").hasAnyRole()
+                        .requestMatchers("/appeal/**").hasAnyRole("ROLE_USER")
                         .anyRequest().authenticated())
                 .oauth2ResourceServer(oauth -> oauth
                         .jwt(Customizer.withDefaults()));

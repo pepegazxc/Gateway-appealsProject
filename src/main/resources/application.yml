@@ -5,6 +5,8 @@ token:
   key: ${JWT_KEY}
 
 spring:
+  config:
+    import: optional:file:.env[.properties]
   docker:
     compose:
       enabled: false
