@@ -11,6 +11,8 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 
 import org.springframework.security.oauth2.jwt.JwtDecoder;
 import org.springframework.security.oauth2.jwt.NimbusJwtDecoder;
+import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationConverter;
+import org.springframework.security.oauth2.server.resource.authentication.JwtGrantedAuthoritiesConverter;
 import org.springframework.security.web.SecurityFilterChain;
 
 import javax.crypto.SecretKey;
@@ -28,7 +30,7 @@ public class Config {
                 .csrf(c -> c.disable())
                 .authorizeHttpRequests(request -> request
                         .requestMatchers("/auth/**", "/help/**").permitAll()
-                        .requestMatchers("/appeal/**").hasAnyRole("ROLE_USER")
+                        .requestMatchers("/appeal/**").hasAnyRole("USER", "ADMIN", "MAYOR")
                         .anyRequest().authenticated())
                 .oauth2ResourceServer(oauth -> oauth
                         .jwt(Customizer.withDefaults()));
@@ -41,5 +43,18 @@ public class Config {
         byte[] keyBytes = Decoders.BASE64.decode(jwtSecret);
         SecretKey spec = Keys.hmacShaKeyFor(keyBytes);
         return NimbusJwtDecoder.withSecretKey(spec).build();
+    }
+
+
+    @Bean
+    public JwtAuthenticationConverter jwtAuthenticationConverter(){
+        JwtGrantedAuthoritiesConverter converter = new JwtGrantedAuthoritiesConverter();
+        converter.setAuthoritiesClaimName("role");
+        converter.setAuthorityPrefix("");
+
+        JwtAuthenticationConverter jwtAuthConverter = new JwtAuthenticationConverter();
+        jwtAuthConverter.setJwtGrantedAuthoritiesConverter(converter);
+
+        return jwtAuthConverter;
     }
 }
