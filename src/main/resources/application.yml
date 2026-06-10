@@ -24,7 +24,7 @@ spring:
           routes:
 ## route for the help service
             - id: help-service
-              uri: http://localhost:8080
+              uri: ${HELP_SERVICE_DOCKER:http://localhost:8080}
               predicates:
                 - Path=/help/**
               filters:
@@ -32,7 +32,7 @@ spring:
 
 ## route for the register service
             - id: register-service
-              uri: http://localhost:8081
+              uri: ${REG_SERVICE_DOCKER:http://localhost:8081}
               predicates:
                 - Path=/auth/**
               filters:
@@ -40,7 +40,7 @@ spring:
 
 ## route for the main service
             - id: main-service
-              uri: http://localhost:8082
+              uri: ${MAIN_SERVICE_DOCKER:http://localhost:8082}
               predicates:
                 - Path=/appeal/**
               filters:

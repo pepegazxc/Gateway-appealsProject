@@ -9,6 +9,10 @@ services:
     container_name: gateway
     ports:
       - "8090:8090"
+    environment:
+      - REG_SERVICE_DOCKER=http://registration-service:8081/
+      - MAIN_SERVICE_DOCKER=http://main-service:8082/
+      - HELP_SERVICE_DOCKER=http://help-service:8080/
 
 networks:
   app-network:
